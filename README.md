@@ -58,7 +58,7 @@ Copia del repositorio de la cátedra usada para la actividad 4 del TP N° 4 (Int
 | `src/02_get-network-device.py` | Pide el ticket y lista los equipos de red (`GET /network-device`): hostname, plataforma e IP de gestión. |
 | `src/03_get-host.py` | Pide el ticket y lista los hosts (`GET /host`): nombre, IP, MAC e interfaz a la que se conectan. |
 | `src/04_tabulate.py` | Pide usuario y clave, obtiene el ticket solo y muestra equipos y hosts en tablas. |
-| `src/05_inventario_csv.py` | **Script propio**, con el mismo estilo que `04_tabulate.py`. Pide usuario y clave, obtiene el ticket, consulta equipos (`GET /network-device`) y hosts (`GET /host`), los muestra en tablas, indica cuántos equipos están en *Managed* y cuáles no (por ejemplo, el ISP con *Wrong credential*) y guarda todo en `inventario.csv` (separador `;`, se abre con Excel). |
+| `src/05_inventario_csv.py` | **Script propio.** Pide usuario y clave, muestra los equipos de red y los hosts en tablas, indica cuáles equipos no están en *Managed* y guarda el inventario en `inventario.csv`. |
 
 ## Cambios respecto de los scripts de la cátedra
 

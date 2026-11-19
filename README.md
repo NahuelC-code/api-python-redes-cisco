@@ -43,3 +43,35 @@ Simplemente escribimos en la línea de comandos: **deactivate**
 
 - **Credenciales del controlador:** los scripts usan el usuario `cisco` y la clave `cisco123!`. Si en tu Network Controller creaste otro usuario, cambialos en `01_get-ticket.py` y en `04_tabulate.py`.
 - **Ticket (X-Auth-Token):** `02_get-network-device.py` y `03_get-host.py` traen escrito un ticket de ejemplo que **no va a funcionar** en tu Packet Tracer, porque el controlador genera uno nuevo en cada sesión y vence. Ejecutá primero `01_get-ticket.py`, copiá el ticket que muestra y reemplazalo en el header `X-Auth-Token` de esos dos scripts. `04_tabulate.py` no necesita este paso: pide el ticket solo.
+
+---
+
+# TP4 – Grupo 10 (Redes de Computadoras 3643, UNLaM)
+
+Copia del repositorio de la cátedra usada para la actividad 4 del TP N° 4 (Integrador). La API es la del Network Controller de Packet Tracer, expuesta en `http://localhost:58000/api/v1` (Options → Preferences → Miscellaneous → *Enable External Access for Network Controller REST API*, y en el controlador Config → Real World → Controller → *Access Enabled*).
+
+## Qué hace cada script
+
+| Script | Qué hace |
+|---|---|
+| `src/01_get-ticket.py` | Pide usuario y clave del controlador y obtiene un ticket con `POST /ticket`. |
+| `src/02_get-network-device.py` | Pide el ticket y lista los equipos de red (`GET /network-device`): hostname, plataforma e IP de gestión. |
+| `src/03_get-host.py` | Pide el ticket y lista los hosts (`GET /host`): nombre, IP, MAC e interfaz a la que se conectan. |
+| `src/04_tabulate.py` | Pide usuario y clave, obtiene el ticket solo y muestra equipos y hosts en tablas. |
+| `src/05_inventario_csv.py` | **Script propio**, con el mismo estilo que `04_tabulate.py`. Pide usuario y clave, obtiene el ticket, consulta equipos (`GET /network-device`) y hosts (`GET /host`), los muestra en tablas, indica cuántos equipos están en *Managed* y cuáles no (por ejemplo, el ISP con *Wrong credential*) y guarda todo en `inventario.csv` (separador `;`, se abre con Excel). |
+
+## Cambios respecto de los scripts de la cátedra
+
+- **Sin credenciales en el código:** como el repositorio es público, los scripts piden el usuario y la clave al ejecutarse (la clave con `getpass`, sin mostrarla) en lugar de tenerlos escritos. `02` y `03` piden el ticket que muestra `01`.
+- **Equipos sin hostname:** en nuestra topología el ISP aparece en el inventario con *Wrong credential* y sin `hostname`; `02` y `04` usan `.get()` para que esa entrada no corte la ejecución.
+
+## Uso (Windows)
+
+```
+python -m venv cisco
+cisco\Scripts\activate
+pip install -r requirements.txt
+python src\05_inventario_csv.py
+```
+
+Con Packet Tracer abierto y el archivo del TP cargado. El CSV generado queda excluido del repositorio por el `.gitignore`.

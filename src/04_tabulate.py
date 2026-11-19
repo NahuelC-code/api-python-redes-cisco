@@ -1,13 +1,16 @@
 #Módulos que se usarán
 import requests #Para entender solicitudes
 import json #Para reconocer el formato json
+from getpass import getpass #Para pedir la clave sin mostrarla
 from tabulate import * #Para crear tablas
 
 baseUri = "http://localhost:58000/api/v1" #URL de PT
 
 # Llamada al API por el ticket
 headers = {"Content-Type": "application/json"} #Headers
-data = json.dumps({"username": "cisco", "password": "cisco123!"}) #Credenciales
+usuario = input("Usuario del controlador [cisco]: ") or "cisco"
+clave = getpass("Clave del controlador: ")
+data = json.dumps({"username": usuario, "password": clave}) #Credenciales
 resp = requests.post(baseUri+"/ticket", data=data, headers=headers) #URL específica
 
 print("Status de Solicitud:")
@@ -32,7 +35,7 @@ host_list=[]
 i=0
 for item in result["response"]:
     i+=1
-    host_list.append([i,item["hostname"],item["serialNumber"],item["softwareVersion"]])
+    host_list.append([i,item.get("hostname", ""),item.get("serialNumber", ""),item.get("softwareVersion", "")])
     #print(item["hostname"]+" "+item["serialNumber"]+" "+item["softwareVersion"]) #Lista completa
 
 print(tabulate(host_list,headers=["Hostname","Serial Number","Software Version"],tablefmt='rst')) #Tabla ordenada 
